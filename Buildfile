@@ -1,6 +1,6 @@
 # ===========================================================================
-# Project:   Yclouds
-# Copyright: ©2010 My Company, Inc.
+# Project:   Scui-sampleapp/
+# Copyright: ©2009 My Company, Inc.
 # ===========================================================================
 
 # Add initial buildfile information here
@@ -9,6 +9,8 @@ config :all, :required => :sproutcore
 # CORE FRAMEWORKS
 config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
 
-config :yclouds do |C|
-    c[:required] = [:sproutcore, :scui]
+# This configuration section will be applied to all bundles used by your
+# application, even bundles that come from other gems.
+config :yclouds do |c|
+  c[:required] = [:sproutcore, :scui]
 end
