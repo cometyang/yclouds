@@ -7,7 +7,7 @@
 config :all, :required => :sproutcore
 
 # CORE FRAMEWORKS
-config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
+config :scui, :required => [:sproutcore, :'scui/foundation', :'scui/calendar', :'scui/dashboard', :'scui/drawing', :'scui/linkit']
 
 # This configuration section will be applied to all bundles used by your
 # application, even bundles that come from other gems.
