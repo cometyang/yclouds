@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Desktop</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/desktop/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1262955396"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/desktop/en/current/tests/views/collection/nowShowing.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            portions copyright @2009 Apple Inc.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var view, content1, content2 ;
+
+module("SC.CollectionView.nowShowing", {
+  setup: function() {
+
+    content1 = "a b c".w();
+    
+    // stub in collection view to verify that proper method are called
+    view = SC.CollectionView.create({
+
+      // updateContentRangeObserver
+      updateContentRangeObserver: CoreTest.stub('updateContentRangeObserver'),
+
+      // reload()
+      
+      reloadCallCount: 0,
+      reloadIndexes: "not called",
+      
+      reload: function(indexes) {
+        this.reloadIndexes = indexes ? indexes.frozenCopy() : indexes;
+        this.reloadCallCount++;
+      },
+      
+      expectReload: function(indexes, callCount) {
+        if (indexes !== NO) {
+          var pass = (indexes === null) ? (this.reloadIndexes === null) : indexes.isEqual(this.reloadIndexes);
+          if (!pass) {
+            indexes.isEqual(this.reloadIndexes);
+          }
+          ok(pass, 'should have called reload(%@), actual reload(%@)'.fmt(indexes, this.reloadIndexes));
+        }  
+        
+        if (callCount !== NO) {
+          equals(this.reloadCallCount, callCount, 'reload() should be called X times');
+        }
+      },
+      
+      // GENERAL SUPPORT
+
+      observer: CoreTest.stub('nowShowing observer').observes('nowShowing'),
+      
+      reset: function() { 
+        this.updateContentRangeObserver.reset();
+        this.reloadCallCount = 0 ;
+        this.reloadIndexes = 'not called';
+        this.observer.reset();
+      },
+      
+      nextNowShowing: SC.IndexSet.create(0,3),
+      
+      // override to reeturn whatever index set is in nextNowShowing property just
+      // for testing.
+      computeNowShowing: function() {
+        return this.nextNowShowing;
+      },
+      
+      content: content1
+      
+    });
+    
+    // some observers will fire on creation because of the content.  just 
+    // ignore them
+    view.reset();
+    
+  }
+});
+
+// ..........................................................
+// GENERAL TESTS
+// 
+
+test("nowShowing should reflect content on create", function() {
+  
+  same(view.get('nowShowing'), view.nextNowShowing, 'should have now showing value');  
+});
+
+test("if nowShowing changes but actual value stays the same, should do nothing", function() {
+
+  // trigger any observers
+  view.notifyPropertyChange('nowShowing');
+  view.observer.expect(1);
+  view.expectReload(NO, 0);
+  view.updateContentRangeObserver.expect(0);
+});
+
+test("nowShowing changes to new index set with some overlap", function() {
+  view.nextNowShowing = SC.IndexSet.create(2,5);
+  view.notifyPropertyChange('nowShowing');
+  view.observer.expect(1);
+  
+  // expect inverse of intersection
+  view.expectReload(SC.IndexSet.create(0,2).add(3,4), 1); 
+  
+  view.updateContentRangeObserver.expect(1);
+});
+
+test("nowShowing changes to new index set with no overlap", function() {
+  view.nextNowShowing = SC.IndexSet.create(10,3);
+  view.notifyPropertyChange('nowShowing');
+  view.observer.expect(1);
+
+  // union of both ranges
+  view.expectReload(SC.IndexSet.create(0,3).add(10,3), 1); 
+  
+  view.updateContentRangeObserver.expect(1);
+});
+
+// ..........................................................
+// SPECIAL CASES
+// 
+
+// Add any specific cases you find that break here
+
+
+
+})();
+</script>
+	</body>
+</html>

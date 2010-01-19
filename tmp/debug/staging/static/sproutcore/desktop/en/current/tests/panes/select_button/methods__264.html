@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Desktop</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/desktop/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955397"></script>
+  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1262955397"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/desktop/en/current/tests/panes/select_button/methods.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            portions copyright @2009 Apple Inc.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test htmlbody ok equals same stop start */
+
+var pane, view , view1, view2, view3, view4 ;
+
+module("SC.SelectButtonView",{
+
+  //setup
+  setup: function() {
+    SC.RunLoop.begin();
+    var isDue = NO ;
+
+    //pane
+    pane = SC.MainPane.create({
+      objs : ["Around","The","World"],
+      objs2 : [{ title: "Around", pos: 3},
+        { title: "The", pos: 1},
+        { title: "World", pos: 2 },
+        { title: "Again", pos: 4}],
+      selectedValue: "World",
+      isDue: YES,
+      childViews: [
+
+        //view1
+        SC.SelectButtonView.extend({
+          objects: ["To","Back", "You"],
+          disableSort: NO
+        }),
+
+        //view2
+        SC.SelectButtonView.extend({
+          objects: ["Drop","Down", "Menu"]
+        }),
+
+        //view3
+        SC.SelectButtonView.extend({
+          objectsBinding: '*owner.objs',
+          valueBinding: '*owner.selectedValue',
+          isVisibleBinding: '*owner.isDue'
+        }),
+
+        //view4
+        SC.SelectButtonView.extend({
+          objectsBinding: '*owner.objs2',
+          valueBinding: '*owner.selectedValue',
+          valueKey: 'title',
+          nameKey: 'title',
+          sortKey: 'pos'
+        }),
+        
+        //view5
+        SC.SelectButtonView.extend({
+          objects: ["My","New", "List"]
+        }),
+        
+        //view6
+        SC.SelectButtonView.extend({
+          objects: ["My","New", "List"],
+          customViewClassName: 'custom-menu-item',
+          customViewMenuOffsetWidth: 46
+        })
+      ]
+    });
+
+    view1 = pane.childViews[0] ;
+    view2 = pane.childViews[1] ;
+    view3 = pane.childViews[2] ;
+    view4 = pane.childViews[3] ;
+    view5 = pane.childViews[4] ;
+    view6 = pane.childViews[5] ;
+    
+    pane.append(); // make sure there is a layer...
+    SC.RunLoop.end();
+  },
+
+  //teardown
+  teardown: function() {
+    pane.remove() ;
+    pane = view = null ;
+  }
+});
+
+//test1
+test("Check if objectBinding works", function() {
+  var obj = view3.objects ;
+  equals('Around',obj.get(0),'First item should be') ;
+  equals('The',obj.get(1),'Second item should be') ;
+  equals('World',obj.get(2),'Last item should be') ;
+});
+
+//test2
+test("Check if valueBinding works", function() {
+  equals('World',view4.get('value'),'Value should be') ;
+});
+
+//test3
+test("Check if isVisibleBinding works", function() {
+  var isDue = pane.isDue ;
+  SC.RunLoop.begin() ;
+  pane.set('isDue', NO) ;
+  SC.RunLoop.end() ;
+  ok(!view3.get('isVisibleInWindow'), 'view2.isVisibleInWindow should be NO') ;
+});
+
+//test4
+test("SelectButton with objects", function() {
+  equals(3,view1.objects.length,'The number of options in selectButton Menu should be') ;
+  equals(null,view1.nameKey,'the selectButton should not have any name key') ;
+  equals(null,view1.valueKey,'the selectButton should not have any value key') ;
+});
+
+//test5
+test("sortObjects() sorts the items of the Drop Down component", function() {
+  var obj = view1.objects;
+  view1.objects = view1.sortObjects(obj);
+
+  equals("Back",obj.get(0),'First item should be') ;
+  equals("To",obj.get(1),'Second item should be') ;
+  equals("You",obj.get(2),'Third item should be') ;
+});
+
+//test6
+test("rebuildMenu() populates the Drop Down Menu with new data", function() {
+  var newObj = ['Rebuild', 'Drop', 'Down', 'Menu'] ;
+  view2.objects = newObj;
+  var obj = view2.objects;
+  equals('Rebuild',obj.get(0),'First item should be') ;
+  equals('Drop',obj.get(1),'Second item should be') ;
+  equals('Down',obj.get(2),'Third item should be') ;
+  equals('Menu',obj.get(3),'Fourth item should be') ;
+});
+
+//test7
+test("isEnabled=NO should add disabled class", function() {
+  SC.RunLoop.begin() ;
+    view1.set('isEnabled', NO) ;
+  SC.RunLoop.end() ;
+  ok(view1.$().hasClass('disabled'), 'should have disabled class') ;
+});
+
+//test8
+test("objects should change on changing the binding", function() {
+  SC.RunLoop.begin();
+    var newObjects = ['Bound','Objects'] ;
+    pane.set('objs', newObjects) ;
+  SC.RunLoop.end() ;
+
+  var objects = view3.objects ;
+  newObjects = pane.objs ;
+  ok(objects===newObjects, 'Objects should be bound') ;
+});
+
+//test9
+test("Check if setting a value actually changes the selection value", function() {
+  SC.RunLoop.begin() ;
+    view2.set('value','Menu') ;
+  SC.RunLoop.end() ;
+
+  equals(view2.get('value'), 'Menu', 'value of Drop down should change to') ;
+}) ;
+
+//test10
+test("objects should change on changing the binding", function() {
+  SC.RunLoop.begin() ;
+    var newObjects = ['Bound','Objects'] ;
+    pane.set('objs', newObjects) ;
+  SC.RunLoop.end() ;
+
+  var objects = view3.objects ;
+  newObjects = pane.objs ;
+  ok(objects===newObjects, 'Objects should be bound') ;
+});
+
+//test11
+test("The properties for select button should take default values unless specified", function() {
+  var prop1 = view5.get('customViewClassName');
+  var prop2 = view5.get('customViewMenuOffsetWidth');
+  equals(prop1,null,'Custom view class name should be null');
+  equals(prop2,0,'Custom view menu off set width should be 0');
+});
+
+//test12
+test("The properties for select button should take the specified values", function() {
+  var prop1 = view6.get('customViewClassName');
+  var prop2 = view6.get('customViewMenuOffsetWidth');
+  equals(prop1,'custom-menu-item','Custom view class name should be custom-menu-item');
+  equals(prop2,46,'Custom view menu off set width should be 46');
+});
+})();
+</script>
+	</body>
+</html>

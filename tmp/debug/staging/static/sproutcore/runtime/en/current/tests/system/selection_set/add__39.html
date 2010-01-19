@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Runtime</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955433"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955433"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955433"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/runtime/en/current/tests/system/selection_set/add.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var set, array, array2;
+module("SC.SelectionSet#add", {
+  setup: function() {
+    set = SC.SelectionSet.create();
+    array = '0 1 2 3 4 5 6 7 8 9'.w();
+    array2 = 'a b c d e f g h i k l m'.w();
+  }
+});
+
+/* 
+  validates that the selection set has the expected content.  pass index sets
+  with sources set appropriately.  The order of the array is not important.
+*/
+function validate(set, expected, defaultSource) {
+  var sources = set.get('sources'),
+      len  = expected.length,
+      idx, cur, actual ;
+      
+  equals(sources.length, expected.length, 'should have same number of sources (actual sources: %@)'.fmt(sources));  
+  
+  for(idx=0;idx<len;idx++) {
+    cur = expected[idx];
+    if (!cur.source) cur.source =defaultSource; 
+    actual = set.indexSetForSource(cur.source, NO);
+    ok(actual, 'should have indexSet for source: %@'.fmt(cur.source));
+    equals(actual.source, cur.source, 'indexSet.source should match source');
+    ok(actual.isEqual(cur), 'indexSet should match for source %@ (actual: %@ expected: %@)'.fmt(cur.source, actual, cur));
+  }
+}
+
+// ..........................................................
+// BASIC ADDS
+// 
+
+test("Adding indexes for single source", function() {
+  set.add(array, 4, 3);
+  validate(set, [SC.IndexSet.create(4,3)], array);
+
+  set.add(array, 1);
+  validate(set, [SC.IndexSet.create(1).add(4,3)], array);
+});
+
+test("Adding multiple sources", function() {
+  var expected = SC.IndexSet.create(4,3);
+  var expected2 = SC.IndexSet.create(1);
+  expected.source = array;
+  expected2.source = array2;
+  
+  set.add(array, 4, 3);
+  validate(set, [expected]);
+
+  set.add(array2, 1);
+  validate(set, [expected, expected2]);
+});
+
+test("Adding IndexSet with source", function() {
+  var expected = SC.IndexSet.create(4,3);
+  expected.source = array;
+  
+  set.add(expected);
+  validate(set, [expected]);
+});
+
+test("Adding another SelectionSet", function() {
+  var expected = SC.IndexSet.create(4,3);
+  var expected2 = SC.IndexSet.create(1,5);
+  expected.source = array;
+  expected2.source = array2;
+  
+  set.add(array, 4, 3);
+  validate(set, [expected]);
+
+  var set2 = SC.SelectionSet.create().add(array2, 1, 5);
+  validate(set2, [expected2]);
+  
+  set.add(set2);
+  validate(set, [expected, expected2]);
+});
+
+test("Adding indexes with range object !!", function() {
+  set.add(array, { start: 4, length: 3 });
+  validate(set, [SC.IndexSet.create(4,3)], array);
+});
+
+
+
+
+})();
+</script>
+	</body>
+</html>

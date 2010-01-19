@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Desktop</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/desktop/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955396"></script>
+  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1262955396"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/desktop/en/current/tests/views/collection/selection.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            portions copyright @2009 Apple Inc.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var view ;
+var content = "1 2 3 4 5 6 7 8 9 10".w().map(function(x) {
+  return SC.Object.create({ title: x });
+});
+
+module("SC.CollectionView.selection", {
+  setup: function() {
+    view = SC.CollectionView.create({
+      isVisibleInWindow: YES, // force render
+      content: content
+    });
+  }
+});
+
+/*
+  Helper method to validate that the item views in the view have the 
+  proper selection state.  Pass in the collection view and the selection.
+  
+  @param {SC.CollectionView} view the view to test
+  @param {SC.IndexSet} sel the index set
+  @param {String} testName the name of the test
+  @returns {void}
+*/
+function verifySelection(view, sel, testName) {
+  var childViews = view.get('childViews'),
+      len = childViews.get('length'),
+      idx, itemView, expected, actual ;  
+
+  if (!testName) testName = '';
+  
+  equals(len, view.get('nowShowing').get('length'), '%@ precond - must have childViews for each nowShowing'.fmt(testName));
+  
+  for(idx=0;idx<len;idx++) {
+    itemView = childViews[idx];
+    ok(!SC.none(itemView.contentIndex), '%@ precond - itemView[%@] must have contentIndex'.fmt(testName, idx));
+    
+    expected = sel.contains(itemView.contentIndex);
+    actual   = itemView.get('isSelected');
+    equals(actual, expected, '%@ itemView[%@].isSelected should match selection(%@)'.fmt(testName, idx, sel));
+  }
+}
+
+// ..........................................................
+// SELECTION SYNCING WITH ITEM VIEWS
+// 
+
+test("item views should have proper isSelected state on reload", function() {
+  var sel = SC.IndexSet.create(3,2).add(8),
+      set = SC.SelectionSet.create().add(view.get('content'), sel);
+
+  view.set('selection', set);
+  SC.run(function() { view.reload(); }); // make sure it loads
+  
+  verifySelection(view, sel);
+});
+
+test("item views should update isSelected state when selection property changes", function() {
+
+  var sel1 = SC.IndexSet.create(3,2),
+      sel2 = SC.IndexSet.create(8);
+      
+  view.set('selection',SC.SelectionSet.create().add(view.content, sel1));
+  SC.run(function() { view.reload(); });
+  verifySelection(view, sel1, 'before');
+
+  SC.run(function() { 
+    view.set('selection',SC.SelectionSet.create().add(view.content, sel2)); 
+  });
+  verifySelection(view, sel2, 'after');
+  
+});
+
+test("item views should not update isSelected state when old index set selection changes", function() {
+
+  var sel1 = SC.IndexSet.create(3,2),
+      sel2 = SC.IndexSet.create(8);
+      
+  view.set('selection',SC.SelectionSet.create().add(view.content, sel1));
+  SC.run(function() { view.reload(); });
+  SC.run(function() { 
+    view.set('selection', SC.SelectionSet.create().add(view.content, sel2)); 
+  });
+  verifySelection(view, sel2, 'before');
+
+  SC.run(function() { sel1.add(10).remove(8); });
+  verifySelection(view, sel2, 'after');
+  
+});
+
+test("item views should update isSelected state when selection index set is modified", function() {
+
+  var sel = SC.IndexSet.create(3,2),
+      content = view.get('content'),
+      set = SC.SelectionSet.create().add(content, sel);
+      
+  view.set('selection',set);
+  SC.run(function() { view.reload(); });
+  verifySelection(view, sel, 'before');
+
+  SC.run(function() { set.add(content, 8).remove(content, 4); });
+  verifySelection(view, SC.IndexSet.create(3).add(8), 'after');
+  
+});
+
+
+// ..........................................................
+// SPECIAL CASES
+// 
+
+test("reloading some items should still update selection properly", function() {
+  var sel1 = SC.IndexSet.create(3,2),
+      sel2 = SC.IndexSet.create(4,2).add(8);
+      
+  view.set('selection',SC.SelectionSet.create().add(view.content, sel1));
+  SC.run(function() { view.reload(); });
+  SC.run(function() { 
+    view.reload(SC.IndexSet.create(4).add(8));
+    view.set('selection', SC.SelectionSet.create().add(view.content, sel2)); 
+  });
+  verifySelection(view, sel2, 'after');
+});
+
+test("select() should round trip", function() {
+  
+  var sel = SC.IndexSet.create(3,2);
+  
+  SC.run(function() { view.reload(); }); // make sure view is all ready
+  SC.run(function() { view.select(sel); });
+  verifySelection(view, sel);
+});
+
+
+
+
+
+})();
+</script>
+	</body>
+</html>

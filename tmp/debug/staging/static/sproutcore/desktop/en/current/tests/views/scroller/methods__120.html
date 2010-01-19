@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Desktop</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/desktop/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1262955395"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/desktop/en/current/tests/views/scroller/methods.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            portions copyright @2009 Apple Inc.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test htmlbody ok equals same stop start */
+var pane, view, view1, view2 ;
+module("SC.ScrollerView",{
+  setup: function() {
+    SC.RunLoop.begin();
+	pane = SC.MainPane.create({
+	  childViews: [
+	    SC.ScrollerView.extend({		     
+		}),
+		SC.ScrollerView.extend({		     
+		  minimum:10,
+		  maximum:100,
+		  isEnabled:NO,
+		  value:15,
+		  layoutDirection: SC.LAYOUT_HORIZONTAL
+		}),
+		SC.ScrollerView.extend({	
+      layout:{ top: 0, bottom: 0, right: 0, width: 20 },	     
+		  minimum:0,
+		  maximum:100
+		})
+
+	  ]	
+	});
+	pane.append(); // make sure there is a layer...
+	SC.RunLoop.end();	
+	view = pane.childViews[0];
+	view1= pane.childViews[1];
+  view2= pane.childViews[2];
+  },
+
+  teardown: function() {
+   	pane.remove();
+   	pane = view = null ;
+  }
+});
+
+test("listing the displayProperties",function(){
+  var obj = view.get('displayProperties');
+  equals(obj.length, 5,'the number of display properties');
+  equals(obj[0],'isFirstResponder','the offset value property');
+  equals(obj[1],'isVisible','the isVisible value property');
+  equals(obj[2],'maximum','the maximum value property');	  
+  equals(obj[3],'isEnabled','the isEnabled offset value property');	  
+  equals(obj[4],'layoutDirection','the layoutDirection property');	  
+
+});
+
+test("testing properties of a scrollerview", function(){
+  equals(10,view1.get('minimum'),'Minimum offset value for the scroller')	;
+  equals(100,view1.get('maximum'),'Maximum offset value for the scroller');
+  equals(NO,view1.get('isEnabled'),'The scroller should be not enabled');
+  equals(SC.LAYOUT_VERTICAL,view.get('layoutDirection'),'The default scroller direction should be vertical');
+  equals(SC.LAYOUT_HORIZONTAL,view1.get('layoutDirection'),'The scroller direction set as vertical during view creation');
+  equals(0,view.get('value'),'The default offset value set during creation for a scroller should be 0');
+  equals(15,view1.get('value'),'The offset value should be 15');
+  // view1.set('layoutDirection',SC.LAYOUT_VERTICAL);
+  // equals(SC.LAYOUT_VERTICAL,view1.get('layoutDirection'),'The scroller direction set after view creation');
+});
+
+test("ownerScrollValueKey() function of the scroller view",function(){
+  equals('verticalScrollOffset',view.ownerScrollValueKey(),'should have a vertical scroll offset');
+  equals('horizontalScrollOffset',view1.ownerScrollValueKey(),'should have a vertical scroll offset');
+});
+
+
+})();
+</script>
+	</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Desktop</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/desktop/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955395"></script>
+  <script type="text/javascript" src="/static/sproutcore/desktop/en/current/javascript.js?1262955395"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/desktop/en/current/tests/views/scroll/ui.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            portions copyright @2009 Apple Inc.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test ok equals same stop start */
+
+(function() {
+    var appleURL="http://photos4.meetupstatic.com/photos/event/4/6/9/9/600_4518073.jpeg";
+    var iv=SC.ImageView.design({value: appleURL, layout: {height:400, width:400}});
+    var pane = SC.ControlTestPane.design({ height: 100 })
+    .add("basic", SC.ScrollView, {
+  
+    })
+
+    .add("basic2", SC.ScrollView, {
+        contentView: iv
+    })
+    
+    .add("basic3", SC.ScrollView, {
+      contentView: iv,
+      isHorizontalScrollerVisible: NO,
+      autohidesHorizontalScroller: NO,
+      autohidesVerticalScroller: NO
+    })
+    
+    .add("disabled", SC.ScrollView, {
+      isEnabled: NO
+    })
+    
+    .add("verticalScrollerBottom",SC.ScrollView, {
+      contentView: iv,
+      hasHorizontalScroller : NO,
+      verticalScrollerBottom: 16,
+      isVerticalScrollerVisible: YES,
+      autohidesVerticalScroller: NO
+      
+    });
+
+    pane.show(); // add a test to show the test pane
+
+  // ..........................................................
+  // TEST VIEWS
+  // 
+  module('SC.ScrollView UI', pane.standardSetup());
+  
+  test("basic", function() {
+    var view = pane.view('basic');
+    ok(!view.$().hasClass('disabled'), 'should not have disabled class');
+    ok(!view.$().hasClass('sel'), 'should not have sel class');
+    
+    equals(view.getPath('childViews.length'), 3, 'scroll view should have only three child views');
+
+    var containerView = view.get('containerView') ;
+    ok(containerView, 'scroll views should have a container view');
+    ok(containerView.kindOf(SC.ContainerView), 'default containerView is a kind of SC.ContainerView');
+    ok(containerView.get('contentView') === null, 'default containerView should have a null contentView itself');
+    ok(view.get('contentView') === null, 'scroll view should have no contentView by default');
+    equals(containerView.getPath('childViews.length'), 0, 'containerView should have no child views');
+    
+    var horizontalScrollerView = view.get('horizontalScrollerView');
+    ok(view.get('hasHorizontalScroller'), 'default scroll view wants a horizontal scroller');
+    ok(horizontalScrollerView, 'default scroll view has a horizontal scroller');
+    
+    var verticalScrollerView = view.get('verticalScrollerView');
+    ok(view.get('hasVerticalScroller'), 'default scroll view wants a vertical scroller');
+    ok(verticalScrollerView, 'default scroll view has a vertical scroller');
+  });
+  
+  
+  
+  test("basic2", function() {
+    var view = pane.view('basic2');
+    ok(view.$().hasClass('sc-scroll-view'), 'should have sc-scroll-view class');    
+        
+    var horizontalScrollerView = view.get('horizontalScrollerView');
+    ok(view.get('hasHorizontalScroller'), 'default scroll view wants a horizontal scroller');
+    ok(horizontalScrollerView, 'default scroll view has a horizontal scroller');
+    ok(horizontalScrollerView.$().hasClass('sc-horizontal'), 'should have sc-horizontal class');        
+	  var maxHScroll = view.maximumHorizontalScrollOffset();    
+	  ok((maxHScroll > 0), 'Max horizontal scroll should be greater than zero');
+    
+    var verticalScrollerView = view.get('verticalScrollerView');
+    ok(view.get('hasVerticalScroller'), 'default scroll view wants a vertical scroller');
+    ok(verticalScrollerView, 'default scroll view has a vertical scroller');
+    ok(verticalScrollerView.$().hasClass('sc-vertical'), 'should have sc-vertical class');    
+	  var maxVScroll = view.maximumVerticalScrollOffset();    
+	  ok((maxVScroll > 0), 'Max vertical scroll should be greater than zero');
+    
+  });
+   
+  test("basic3", function() {
+    var view = pane.view('basic3');
+    view.set('isHorizontalScrollerVisible',NO);
+    ok(!view.get('canScrollHorizontal'),'cannot scroll in horizontal direction');
+    ok(view.$().hasClass('sc-scroll-view'), 'should have sc-scroll-view class');    
+    var horizontalScrollerView = view.get('horizontalScrollerView');
+    ok(view.get('hasHorizontalScroller'), 'default scroll view wants a horizontal scroller');
+    ok(horizontalScrollerView, 'default scroll view has a horizontal scroller');
+    ok(horizontalScrollerView.$().hasClass('sc-horizontal'), 'should have sc-horizontal class');        
+    var maxHScroll = view.maximumHorizontalScrollOffset();    
+    equals(maxHScroll , 0, 'Max horizontal scroll should be equal to zero');
+
+    view.set('isVerticalScrollerVisible',NO);
+    ok(!view.get('canScrollVertical'),'cannot scroll in vertical direction');
+    var verticalScrollerView = view.get('verticalScrollerView');
+    ok(view.get('hasVerticalScroller'), 'default scroll view wants a vertical scroller');
+    ok(verticalScrollerView, 'default scroll view has a vertical scroller');
+    ok(verticalScrollerView.$().hasClass('sc-vertical'), 'should have sc-vertical class');    
+    var maxVScroll = view.maximumVerticalScrollOffset();    
+    equals(maxVScroll ,0, 'Max vertical scroll should be equal to zero');
+  });
+
+  test("disabled", function() {
+     var view = pane.view('disabled'); 
+     ok(view.$().hasClass('disabled'), 'should have disabled class');
+     ok(!view.$().hasClass('sel'), 'should not have sel class');
+   });
+   
+   test("Setting the scroller to a specific value", function() {
+     var viewsc = pane.view('basic2');
+     // should be testing against the layer.scrollTop property
+     SC.RunLoop.begin();
+     viewsc.scrollTo(0, 10);
+     SC.RunLoop.end();
+     equals(viewsc.get('verticalScrollOffset'), 10, "1After setting the value to the 10 on a vertical scroller, the verticalscrollOffset property of the layer must be");
+     equals(viewsc.get('verticalScrollerView').get('layer').scrollTop, 10, "2After setting the value to the 10 on a vertical scroller, the scrollTop property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(0, 0);
+     SC.RunLoop.end();
+     equals(viewsc.get('verticalScrollOffset'), 0, "1After setting the value to the 0 on a vertical scroller, the verticalscrollOffset property of the layer must be");
+     equals(viewsc.get('verticalScrollerView').get('layer').scrollTop, 0, "2After setting the value to the 0 on a vertical scroller, the scrollTop property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(0, 100);
+     SC.RunLoop.end();
+     equals(viewsc.get('verticalScrollOffset'), 100, "1After setting the value to the 100 on a vertical scroller, the verticalscrollOffset property of the layer must be");
+     equals(viewsc.get('verticalScrollerView').get('layer').scrollTop, 100, "2After setting the value to the 100 on a vertical scroller, the scrollTop property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(0, -1);
+     SC.RunLoop.end();
+     equals(viewsc.get('verticalScrollOffset'), 0, "1After setting the value to the -1 on a vertical scroller, the verticalscrollOffset property of the layer must be");
+     equals(viewsc.get('verticalScrollerView').get('layer').scrollTop, 0, "2After setting the value to the -1 on a vertical scroller, the scrollTop property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(0, 101);
+     SC.RunLoop.end();
+     equals(viewsc.get('verticalScrollOffset'), 101, "1After setting the value to the 101 on a vertical scroller, the verticalscrollOffset property of the layer must be");
+     equals(viewsc.get('verticalScrollerView').get('layer').scrollTop, 101, "2After setting the value to the 101 on a vertical scroller, the scrollTop property of the layer must be");
+
+     // should be testing against the layer.scrollLeft property
+     viewsc.set('layoutDirection', SC.LAYOUT_HORIZONTAL);
+     SC.RunLoop.begin();
+     viewsc.scrollTo(10, 0);
+     SC.RunLoop.end();
+     equals(viewsc.get('horizontalScrollOffset'), 10, "After setting the value to the 10 on a horizontal scroller, the horizontalScrollOffset property of the layer must be");
+     equals(viewsc.get('horizontalScrollerView').get('layer').scrollLeft, 10, "After setting the value to the 10 on a horizontal scroller, the scrollLeft property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(0, 0);
+     SC.RunLoop.end();
+     equals(viewsc.get('horizontalScrollOffset'), 0, "After setting the value to the 0 on a horizontal scroller, the horizontalScrollOffset property of the layer must be");
+     equals(viewsc.get('horizontalScrollerView').get('layer').scrollLeft, 0, "After setting the value to the 0 on a horizontal scroller, the scrollLeft property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(50, 0);
+     SC.RunLoop.end();
+     equals(viewsc.get('horizontalScrollOffset'), 50, "After setting the value to the 50 on a horizontal scroller, the horizontalScrollOffset property of the layer must be");
+     equals(viewsc.get('horizontalScrollerView').get('layer').scrollLeft, 50, "After setting the value to the 50 on a horizontal scroller, the scrollLeft property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo( - 1, 0);
+     SC.RunLoop.end();
+     equals(viewsc.get('horizontalScrollOffset'), 0, "After setting the value to the -1 on a horizontal scroller, the horizontalScrollOffset property of the layer must be");
+     equals(viewsc.get('horizontalScrollerView').get('layer').scrollLeft, 0, "After setting the value to the -1 on a horizontal scroller, the scrollLeft property of the layer must be");
+     SC.RunLoop.begin();
+     viewsc.scrollTo(101, 0);
+     SC.RunLoop.end();
+     equals(viewsc.get('horizontalScrollOffset'), 73, "After setting the value to the 101 on a horizontal scroller, the horizontalScrollOffset property of the layer must be");
+     equals(viewsc.get('horizontalScrollerView').get('layer').scrollLeft, 73, "After setting the value to the 101 on a horizontal scroller, the scrollLeft property of the layer must be");
+  });
+   
+   
+   test("non-zero bottom in vertical scrollbar", function() {
+      var view = pane.view('verticalScrollerBottom'); 
+      equals(view.get('verticalScrollerBottom'),16, "should have verticalScrollerBottom as ");
+      var scroller = view.get('verticalScrollerView') ;
+      ok(scroller, 'should have vertical scroller view ');
+      equals(scroller.get('layout').bottom,16, 'should have layout.bottom of scroller as ');
+      equals(scroller.$()[0].style.bottom,'16px', 'should have style.bottom of scroller as ');
+    });
+   
+   
+})();
+
+})();
+</script>
+	</body>
+</html>

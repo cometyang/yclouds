@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955400"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955400"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955400"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955400"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/debug/control_test_pane/ui.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            portions copyright @2009 Apple Inc.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test htmlbody ok equals same stop start */
+
+(function() {
+  // var content = []
+  // for (var idx=0, len=20; idx<len; ++idx) {
+  //   content.push(SC.Record.create({
+  //     id: 'item_'+idx,
+  //     title: 'Item ' + idx
+  //   }))
+  // }
+  // 
+  // var singleSelection = [content[0]];
+  // var multiSelectionContiguous = [content[0], content[1], content[2]];
+  // var multiSelectionDiscontiguous = [content[0], content[2], content[4]];
+  // 
+  // var pane = SC.ControlTestPane.design({ height: 100 })
+  //   .add("basic", SC.ListView, {
+  //     content: content,
+  //     contentValueKey: 'title'
+  //   })
+  //   
+  //   .add("disabled", SC.ListView, {
+  //     isEnabled: NO,
+  //     content: content,
+  //     contentValueKey: 'title'
+  //   })
+  //   
+  //   .add("disabled - single selection", SC.ListView, {
+  //     isEnabled: NO,
+  //     content: content,
+  //     contentValueKey: 'title',
+  //     selection: singleSelection
+  //   })
+  //   
+  //   .add("single selection", SC.ListView, {
+  //     content: content,
+  //     contentValueKey: 'title',
+  //     selection: singleSelection
+  //   })
+  //   
+  //   .add("multiple selection, contiguous", SC.ListView, {
+  //     content: content,
+  //     contentValueKey: 'title',
+  //     selection: multiSelectionContiguous
+  //   })
+  //   
+  //   .add("multiple selection, discontiguous", SC.ListView, {
+  //     content: content,
+  //     contentValueKey: 'title',
+  //     selection: multiSelectionDiscontiguous
+  //   })
+  //   
+  // pane.show(); // add a test to show the test pane
+  
+  // ..........................................................
+  // TEST PANE
+  // 
+  
+  module('SC.ControlTestPane UI');
+  
+  test("showing/removing a pane", function() {
+    var pane = SC.ControlTestPane.design() ;
+    pane = pane.create() ;
+    
+    ok(pane.$().hasClass('sc-control-test-pane'), 'should have class sc-control-test-pane');
+    
+    ok(pane.get('isVisible'), 'control test pane should be visible after we create it');
+    ok(pane.get('isVisibleInWindow'), 'control tast pane should be visible in the window after we create it');
+    
+    pane.remove() ;
+    
+    ok(pane.get('isVisible'), 'control test pane still should be visible after we remove it');
+    ok(!pane.get('isVisibleInWindow'), 'control tast pane should NOT be visible in the window after we remove it');
+  });
+  
+  test("adding named children to the pane", function() {
+    var pane = SC.ControlTestPane.design() ;
+    pane.add('first', SC.View) ;
+    pane.add('second', SC.View) ;
+    pane.add('third', SC.View) ;
+    
+    equals(pane.prototype.childViews.length, 6, 'control test pane has correct number of children before create') ;
+    pane = pane.create() ;
+    equals(pane.getPath('childViews.length'), 6, 'control test pane has correct number of children after create') ;
+    
+    var childViews = pane.get('childViews') ;
+    var firstLabel = childViews[0] ;
+    equals(firstLabel.$().text(), 'first:', 'first label should be correct') ;
+    
+    var secondLabel = childViews[2] ;
+    equals(secondLabel.$().text(), 'second:', 'second label should be correct') ;
+    
+    var thirdLabel = childViews[4] ;
+    equals(thirdLabel.$().text(), 'third:', 'third label should be correct') ;
+    
+    var paneLayer = pane.get('layer') ;
+    for (var idx=0, len=6; idx<len; ++idx) {
+      var view = childViews[idx] ;
+      var layer = view.get('layer') ;
+      equals(layer.parentNode, paneLayer, 'control test pane childView has layer with correct parentNode');
+    }
+    
+    pane.remove() ;
+  });
+  
+})();
+
+})();
+</script>
+	</body>
+</html>

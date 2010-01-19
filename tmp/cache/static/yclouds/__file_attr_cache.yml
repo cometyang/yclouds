@@ -1,0 +1,57 @@
+--- 
+/home/yyang/yclouds/yclouds/apps/yclouds/resources/loading.rhtml: 
+  scan_source: 
+    mtime: 1262955137
+    value: []
+
+/home/yyang/yclouds/yclouds/apps/yclouds/models/sdf_graph.js: 
+  scan_source: 
+    mtime: 1262986464
+    value: []
+
+/home/yyang/yclouds/yclouds/apps/yclouds/resources/main_page.js: 
+  scan_source: 
+    mtime: 1262955137
+    value: []
+
+/home/yyang/yclouds/yclouds/apps/yclouds/fixtures/actor.js: 
+  scan_source: 
+    mtime: 1262990718
+    value: 
+    - - sc_require
+      - "'"
+      - models/actor
+/home/yyang/yclouds/yclouds/apps/yclouds/models/actor.js: 
+  scan_source: 
+    mtime: 1262988174
+    value: []
+
+/home/yyang/yclouds/yclouds/apps/yclouds/main.js: 
+  scan_source: 
+    mtime: 1262955137
+    value: []
+
+/home/yyang/yclouds/yclouds/apps/yclouds/fixtures/sdf_graph.js: 
+  scan_source: 
+    mtime: 1262986464
+    value: 
+    - - sc_require
+      - "'"
+      - models/sdf_graph
+/home/yyang/yclouds/yclouds/apps/yclouds/core.js: 
+  scan_source: 
+    mtime: 1262955137
+    value: []
+
+/home/yyang/yclouds/yclouds/apps/yclouds/fixtures/channel.js: 
+  scan_source: 
+    mtime: 1262986441
+    value: 
+    - - sc_require
+      - "'"
+      - models/channel
+/home/yyang/yclouds/yclouds/apps/yclouds/models/channel.js: 
+  scan_source: 
+    mtime: 1262986441
+    value: []
+

@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955398"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/views/view/updateLayer.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test equals context ok same */
+
+// NOTE: This file tests both updateLayer() and the related methods that 
+// will trigger it.
+
+// ..........................................................
+// TEST: updateLayer()
+// 
+module("SC.View#updateLayer");
+
+test("invokes prepareContext() and then updates layer element", function() {
+  var layer = document.createElement('div');
+  var view = SC.View.create({
+    layer: layer, // fake it...
+    prepareContext: function(context) {
+      context.addClass('did-update');
+    }
+  });
+  
+  view.updateLayer();
+  ok(SC.$(layer).attr('class').indexOf('did-update')>=0, 'has class name added by prepareContext()');
+});
+
+// ..........................................................
+// TEST: updateLayerIfNeeded()
+// 
+var view, callCount ;
+module("SC.View#updateLayerIfNeeded", {
+  setup: function() {
+    // setup a fake view class so that updateLayerIfNeeded() will call
+    // updateLayer() if needed.  updateLayer() is faked to isolate test
+    var layer = document.createElement('div');
+    view = SC.View.create({
+      layer: layer, // fake it...
+      isVisibleInWindow: YES,
+      layerNeedsUpdate: YES,
+      updateLayer: function() { callCount++; }
+    });
+    callCount = 0 ;
+  }
+  
+});
+
+test("does not call updateLayer if layerNeedsUpdate is NO", function() {
+  view.set('layerNeedsUpdate', NO);
+  view.updateLayerIfNeeded();
+  equals(callCount, 0, 'updateLayer did NOT run');
+});
+
+test("does not call updateLayer if isVisibleInWindow is NO", function() {
+  view.set('isVisibleInWindow', NO);
+  view.updateLayerIfNeeded();
+  equals(callCount, 0, 'updateLayer did NOT run');
+});
+
+test("does call updateLayer() if isVisible & layerNeedsUpdate", function() {
+  equals(view.get('isVisibleInWindow'), YES, 'precond - isVisibleInWindow');
+  equals(view.get('layerNeedsUpdate'), YES, 'precond - layerNeedsUpdate');
+  
+  view.updateLayerIfNeeded();
+  ok(callCount > 0, 'updateLayer() did run');
+});
+
+test("resets layerNeedsUpdate to NO if called", function() {
+  equals(view.get('layerNeedsUpdate'), YES, 'precond - layerNeedsUpdate');
+  view.updateLayerIfNeeded();
+  equals(view.get('layerNeedsUpdate'), NO, 'layerNeedsUpdate reset to NO');
+});
+
+test("returns receiver", function() {
+  equals(view.updateLayerIfNeeded(), view, 'returns receiver');
+});
+
+test("only runs updateLayer() once if called multiple times (since layerNeedsUpdate is set to NO)", function() {
+  callCount = 0;
+  view.updateLayerIfNeeded().updateLayerIfNeeded().updateLayerIfNeeded();
+  equals(callCount, 1, 'updateLayer() called only once');
+});
+
+// ..........................................................
+// TEST: layerNeedsUpdate auto-trigger
+// 
+module("SC.View#layerNeedsUpdate auto-triggers", {
+  setup: function() {
+    // use fake method to isolate call...
+    view = SC.View.create({
+      updateLayerIfNeeded: function() { callCount++; }
+    });
+    callCount = 0;
+  }
+});
+
+test("setting layerNeedsUpdate calls updateLayerIfNeeded at end of runloop", function() {
+  SC.RunLoop.begin();
+  view.set('layerNeedsUpdate', YES);
+  SC.RunLoop.end();
+  
+  equals(callCount, 1, 'updateLayerIfNeeded did run');  
+});
+
+test("setting & resetting only triggers updateLayerIfNeeded once per runloop", function() {
+  SC.RunLoop.begin();
+  view.set('layerNeedsUpdate', YES)
+      .set('layerNeedsUpdate', NO)
+      .set('layerNeedsUpdate', YES);
+  SC.RunLoop.end();
+  
+  equals(callCount, 1, 'updateLayerIfNeeded did run');  
+});
+
+// ..........................................................
+// INTEGRATION SCENARIOS
+// 
+
+module("SC.View#updateLayer - integration");
+
+test("layerNeedsUpdate actually triggers updateLayer", function() {
+  var callCount = 0 ;
+  var layer = document.createElement('div');
+  var view = SC.View.create({
+    layer: layer, // fake it...
+    isVisibleInWindow: YES,
+    updateLayer: function() { callCount++; }
+  });
+  
+  SC.RunLoop.begin();
+  view.set('layerNeedsUpdate', YES);
+  SC.RunLoop.end();
+  
+  equals(callCount, 1, 'updateLayer did run b/c layerNeedsUpdate is YES');
+  callCount = 0 ;
+  
+  SC.RunLoop.begin();
+  view.set('layerNeedsUpdate', YES);
+  view.set('layerNeedsUpdate', NO);
+  SC.RunLoop.end();
+  
+  equals(callCount, 0, 'updateLayer did NOT run b/c layerNeedsUpdate is NO');
+});
+
+
+})();
+</script>
+	</body>
+</html>

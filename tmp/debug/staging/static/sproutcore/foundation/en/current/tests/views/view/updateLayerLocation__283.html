@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955399"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/views/view/updateLayerLocation.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: �2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test equals context ok same */
+
+// .......................................................
+//  updateLayerLocation() 
+//
+var parent, child, parentLayer, childLayer;
+module("SC.View#updateLayerLocation", {
+	setup: function() {
+		parent = SC.View.create({ 
+			childViews: [SC.View]
+		});
+		child = parent.childViews[0];
+	
+		parent.createLayer();
+		parentLayer = parent.get('layer');
+		childLayer = child.get('layer');
+	},
+	
+	teardown: function() {
+		parent = child = parentLayer = childLayer = null;
+	}
+});  
+
+test("returns receiver", function() {
+	var view = SC.View.create();
+	equals(view.updateLayerLocation(), view, 'returns receiver');
+});
+
+
+// helper method for testing if a parent still contains a child node
+function parentHasChild(parent, child) {
+	var cur = parent.firstChild;
+	while(cur) {
+		if (cur === child) return YES;
+		cur = cur.nextSibling ;
+	}
+	return NO ;
+}
+
+test("CASE 1: remove child from parent - remove child layer from parent layer", function() {
+
+	equals(childLayer.parentNode, parentLayer, 'child layer currently belongs to parent');
+
+	child.removeFromParent();
+	child.updateLayerLocation();
+	ok(!parentHasChild(parentLayer, childLayer), 'child layer no longer belongs to parent node') ;
+});
+
+test("CASE 2: add child to new parent view with no layer if its own, destroy the layer...", function() {
+
+	var newParent = SC.View.create();
+	ok(!newParent.get('layer'), 'precond - new parent has no layer');
+	newParent.appendChild(child);
+	
+	child.updateLayerLocation() ;
+	ok(!parentHasChild(parentLayer, childLayer), 'child layer was removed from parent layer');
+	ok(!child.get('layer'), 'child no longer has layer either');
+});
+
+test("CASE 3: add child with no layer or parent with no layer.  nothing to do.  this test ensures no errors are thrown", function() {
+
+	// create a few new views w/ no layers...
+	var newParent = SC.View.create();
+	var newChild = SC.View.create();
+	ok(!newParent.get('layer'), 'precond - new parent has no layer');
+	ok(!newChild.get('layer'), 'precond - new child has no layer');
+	newParent.appendChild(newChild);
+	
+	ok(!newParent.get('layer'), 'new parent still has no layer');
+	ok(!newChild.get('layer'), 'new child still has no layer');
+});
+
+test("CASE 4: add child with no layer to parent with layer.  create layer for child", function() {
+
+	var newChild = SC.View.create();
+	ok(!newChild.get('layer'), 'precond - new child has no layer');
+
+	parent.appendChild(newChild);
+	newChild.updateLayerLocation();
+	
+	var layer = newChild.get('layer');
+	ok(layer, 'newChild now has layer');
+	equals(layer.parentNode, parentLayer, 'newChild layer belongs to parent layer');	
+});
+
+test("CASE 5: add child with layer to parent with layer.  move layer from previous location to new parent", function() {
+
+	var newParent = SC.View.create();
+	var layer = newParent.createLayer().get('layer');
+	ok(layer, 'precond - newParent has layer');
+	
+	newParent.appendChild(child);
+	child.updateLayerLocation();
+	
+	ok(!parentHasChild(parentLayer, childLayer), 'old parent layer no longer has child layer');
+	ok(parentHasChild(layer, childLayer), 'newParent layer now has child');
+});
+
+test("CASE 5a: insert child before a sibling w/ layer - should insert child layer before sibling layer", function() {
+
+	var newParent = SC.View.create({
+	  childViews: [SC.View]
+	}).createLayer();
+	var newParentLayer = newParent.get('layer');
+
+	var sibling = newParent.childViews[0];
+	var siblingLayer = sibling.get('layer');
+
+	ok(newParentLayer, 'precond - newParent has layer');
+	ok(siblingLayer, 'precond - sibling has layer');
+	ok(parentHasChild(newParentLayer, siblingLayer), 'precond - siblingLayer belongs to new parent layer')	;
+	
+	newParent.insertBefore(child, sibling);
+	child.updateLayerLocation();
+	
+	equals(childLayer.nextSibling, siblingLayer, 'child layer inserted before sibling layer');
+	ok(parentHasChild(newParentLayer, childLayer), 'newParentLayer does not have childLayer');
+});
+
+
+test("CASE 5b: insert child w/ layer before a sibling w/ NO layer - should create and insert sibling & child's layers", function() {
+
+	var newParent = SC.View.create().createLayer();
+	var newParentLayer = newParent.get('layer');
+
+	var sibling = SC.View.create();
+
+	ok(newParentLayer, 'precond - newParent has layer');
+	ok(!sibling.get('layer'), 'precond - sibling should have NO layer');
+	
+	// add layer-less sibling to parent before child..
+	newParent.appendChild(sibling);
+	newParent.insertBefore(child, sibling);
+	
+	ok(sibling.get('layerLocationNeedsUpdate'), 'sibling.layerLocationNeedsUpdate should be YES');
+	
+	child.updateLayerLocation();
+	
+	var siblingLayer = sibling.get('layer');
+	ok(siblingLayer, 'sibling should have layer now');
+	ok(parentHasChild(newParentLayer, siblingLayer), 'sibling layer should belong to newParent layer');
+	
+	equals(childLayer.nextSibling, siblingLayer, 'child layer should be inserted before sibling layer');
+	ok(parentHasChild(newParentLayer, childLayer), 'newParentLayer should have childLayer');
+});
+
+// .......................................................
+//  updateLayerLocationIfNeeded() 
+//
+var view, runCount ;
+module("SC.View#updateLayerLocationIfNeeded",{
+ setup: function() {
+   view = SC.View.create({
+     updateLayerLocation: function() { runCount++; }
+   })
+   runCount = 0;
+ },
+ 
+ teardown: function() { view = null; }
+});  
+
+test("returns receiver", function() {
+	equals(view.updateLayerLocationIfNeeded(), view, 'returns receiver');
+});
+
+test("invokes updateLayerLocation if layerLocationNeedsUpdate is YES", function() {
+  
+  view.set('layerLocationNeedsUpdate', YES);
+  view.updateLayerLocationIfNeeded();
+  equals(runCount, 1, 'did invoke');  
+});
+
+test("does NOT invoke updateLayerLocation if layerLocationNeedsUpdate is NO", function() {
+  
+  view.set('layerLocationNeedsUpdate', NO);
+  view.updateLayerLocationIfNeeded();
+  equals(runCount, 0, 'did NOT invoke');  
+});
+
+test("sets layerLocationNeedsUpdate to NO when run", function() {
+  
+  view.set('layerLocationNeedsUpdate', YES);
+  view.updateLayerLocationIfNeeded();
+  equals(view.get('layerLocationNeedsUpdate'), NO, 'did reset');
+});
+
+
+
+
+})();
+</script>
+	</body>
+</html>

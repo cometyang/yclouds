@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955399"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/views/view/insertBefore.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test equals context ok same */
+
+var parent, child;
+module("SC.View#insertBefore", {
+	setup: function() {
+	  child = SC.View.create();
+	  parent = SC.View.create({
+	    childViews: [SC.View]
+	  });		
+	}
+});
+
+test("returns receiver", function() {
+  equals(parent.insertBefore(child, null), parent, 'receiver');
+});
+
+test("makes set child.parentView = to new parent view", function() {
+	ok(child.get('parentView')!==parent, 'precond - parent is not child.parentView yet');
+	
+	// add observer to make sure property change triggers 
+	var callCount = 0;
+	child.addObserver('parentView', function() {
+	  callCount++;
+	});
+	
+	parent.insertBefore(child, null);
+	equals(child.get('parentView'), parent, 'parent is child.parentView');
+	equals(callCount, 1, 'observer did fire');
+});
+
+test("insertBefore(child, null) appends child to end of parent.childView's array", function() {
+	parent.insertBefore(child, null);
+	equals(parent.childViews[parent.childViews.length-1], child, 'child is last childView');
+});
+
+test("insertBefore(child, otherChild) inserts child before other child view", function() {
+  
+  var otherChild = parent.childViews[0]; // get current first child
+  ok(otherChild, 'precond - otherChild is not null');
+  parent.insertBefore(child, otherChild);
+  equals(parent.childViews[0], child, 'child inserted before other child');
+});
+
+test("if child belongs to another parent view, child will be removed from other parent when added to new parent", function() {
+
+	// create child view that belongs to a parent already
+  var oldParent = SC.View.create({ childViews:[SC.View] });
+  child = oldParent.childViews[0];
+  
+	ok(child, 'precond - got child');
+  ok(child.get('parentView'), 'precond - child has a parent view');  
+  
+  parent.insertBefore(child, null);
+  ok(oldParent.childViews.indexOf(child)<0, 'oldParent no longer has childView');
+  equals(child.get('parentView'), parent, 'child has new parent view');
+});
+
+test("invokes willAddChild() on receiver if defined before adding child" ,function() {
+
+  // monkey patch to test
+  var callCount = 0;
+  var otherChild = parent.childViews[0];
+  parent.willAddChild = function(newChild, beforeView) {
+  
+  	// verify params
+  	equals(newChild, child, 'passed newChild');
+  	equals(beforeView, otherChild, 'passed beforeView');
+  	
+  	// verify this is called BEFORE the view is added
+  	ok(parent.childViews.indexOf(child)<0, 'should not have child yet');
+  	ok(child.get('parentView')!==parent, 'childView not changed yet either');
+  	callCount++;
+  };
+
+	  
+  parent.insertBefore(child, otherChild);
+  ok(callCount, 1, 'invoked');
+});
+
+test("invokes willAddToParent() on child view if defined before adding child" ,function() {
+
+  // monkey patch to test
+  var callCount = 0;
+  var otherChild = parent.childViews[0];
+  child.willAddToParent = function(parentView, beforeView) {
+  
+  	// verify params
+  	equals(parentView, parent, 'passed parent');
+  	equals(beforeView, otherChild, 'passed beforeView');
+  	
+  	// verify this is called BEFORE the view is added
+  	ok(parent.childViews.indexOf(child)<0, 'should not have child yet');
+  	ok(child.get('parentView')!==parent, 'childView not changed yet either');
+  	callCount++;
+  };
+
+	  
+  parent.insertBefore(child, otherChild);
+  ok(callCount, 1, 'invoked');
+});
+
+test("invokes didAddChild() on receiver if defined after adding child" ,function() {
+
+  // monkey patch to test
+  var callCount = 0;
+  var otherChild = parent.childViews[0];
+  parent.didAddChild = function(newChild, beforeView) {
+  
+  	// verify params
+  	equals(newChild, child, 'passed newChild');
+  	equals(beforeView, otherChild, 'passed beforeView');
+  	
+  	// verify this is called AFTER the view is added
+  	ok(parent.childViews.indexOf(child)>=0, 'should have child');
+  	ok(child.get('parentView')===parent, 'childView should have new parentView');
+  	callCount++;
+  };
+
+	  
+  parent.insertBefore(child, otherChild);
+  ok(callCount, 1, 'invoked');
+});
+
+test("invokes didAddToParent() on child view if defined after adding child" ,function() {
+
+  // monkey patch to test
+  var callCount = 0;
+  var otherChild = parent.childViews[0];
+  child.didAddToParent = function(parentView, beforeView) {
+  
+  	// verify params
+  	equals(parentView, parent, 'passed parent');
+  	equals(beforeView, otherChild, 'passed beforeView');
+  	
+  	// verify this is called AFTER the view is added
+  	ok(parent.childViews.indexOf(child)>=0, 'should have child');
+  	ok(child.get('parentView')===parent, 'childView should have new parentView');
+  	callCount++;
+  };
+
+	  
+  parent.insertBefore(child, otherChild);
+  ok(callCount, 1, 'invoked');
+});
+
+test("invokes parentViewDidChange() on child view.  this is used by the view internals to update layer loc", function() {
+
+	// monkey patch to test
+	var callCount = 0;
+	child.parentViewDidChange = function() { callCount++; };
+	
+	parent.insertBefore(child, null);
+	equals(callCount, 1, 'invoked parentViewDidChange');
+});
+
+// VERIFY LAYER CHANGES ARE DEFERRED
+test("should not move layer immediately", function() {
+
+  parent.createLayer();
+  child.createLayer();
+  
+  ok(parent.get('layer'), 'precond - parent has layer');
+  ok(child.get('layer'), 'precond - child has layer');
+  
+  parent.insertBefore(child, null);
+  ok(child.get('layer').parentNode !== parent.get('layer'), 'did not move layer');
+  
+});
+
+// .......................................................
+// appendChild()
+//
+
+module('SC.View#appendChild', {
+  setup: function() {
+    parent = SC.View.create({
+      childViews: [SC.View, SC.View] 
+    });
+    
+    child = SC.View.create();
+  }
+});
+
+test("returns receiver", function() {
+  equals(parent.appendChild(child, null), parent, 'receiver');
+});
+
+  
+test("should add child to end of childViews", function() {
+  parent.appendChild(child);
+  equals(parent.childViews[parent.childViews.length-1], child, 'child is last child view');
+});
+
+
+
+})();
+</script>
+	</body>
+</html>

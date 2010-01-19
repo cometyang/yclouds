@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955398"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/system/request.js"; 
+}
+(function() {
+// ========================================================================
+// SC.Request Base Tests
+// ========================================================================
+/*globals module test ok isObj equals expects */
+
+var url, request, contents ;
+
+module("SC.Request", {
+  
+  setup: function() {
+    url = '/static/sproutcore/foundation/en/current/fixtures/file_exists.json?1262955016'; //"/static/sproutcore/en/desktop/_src/desktop.platform/english.lproj/file_exists.json" ;
+    request = SC.Request.getUrl(url) ;
+    contents = null ;
+  },
+  
+  teardown: function() {
+    url = request = contents;
+  }
+  
+});
+
+test("Basic Requirements", function() {
+  ok(SC.Request, "SC.Request is defined") ;
+  ok("" !== url, "url variable is not empty") ;
+  ok(request !== null, "request object is not null") ;
+  ok(contents === null, "contents is null" ) ;
+});
+
+test("Test Asynchronous GET Request", function() {
+  
+  var response, timer;
+
+  timer = setTimeout(function() {
+    ok(false, 'response did not invoke notify() within 2sec');
+    window.start();
+  }, 2000);
+  
+  request.notify(this, function(response) {
+    ok(SC.ok(response), 'response should not be an error');
+    equals(response.get('body'), '{"message": "Yay!"}', 'should match retrieved message');
+    clearTimeout(timer);
+    window.start();
+  });
+  
+  response = request.send();
+  ok(response !== null, 'request.send() should return a response object');
+  ok(response.get('status')<0, 'response should still not have a return code since this should be async');
+  
+  stop() ; // stops the test runner - wait for response
+});
+
+test("Test Synchronous GET Request", function() {
+
+  request.set("isAsynchronous", NO);  
+  var response = request.send();
+  
+  ok(response !== null, 'send() should return response') ;
+  ok(SC.$ok(response), 'contents should not be an error ');
+  equals(response.get('body'), '{"message": "Yay!"}', 'should match retrieved message') ;
+});
+
+test("Test Asynchronous GET Request, auto-deserializing JSON", function() {
+  request.set("isJSON", YES);
+
+
+  var timer;
+
+  timer = setTimeout( function(){
+    ok(false, 'response did not invoke notify()');
+    window.start();
+  }, 1000);
+  
+  request.notify(this, function(response) {
+    ok(SC.ok(response), 'response should not be error');
+    same(response.get('body'), {"message": "Yay!"}, 'repsonse.body');
+    clearTimeout(timer);
+    window.start();
+  });
+  
+  request.send();
+  
+  stop() ; // stops the test runner
+
+});
+
+test("Test auto-deserializing malformed JSON", function() {
+  request = SC.Request.getUrl('/static/sproutcore/foundation/en/current/fixtures/malformed.json?1262955016').set('isJSON', YES);
+
+  var timer = setTimeout(function() {
+    ok(false, 'response did not invoke notify()');
+    window.start();
+  }, 1000);
+  
+  request.notify(this, function(response) {
+    ok(SC.ok(response), 'response should not be error');
+    
+    try {
+      var body = response.get('body');
+      ok(!SC.ok(body), 'body should be an error');
+    } catch(e) {
+      ok(false, 'getting the body should not throw an exception');
+    }
+    
+    clearTimeout(timer);
+    window.start();
+  });
+  
+  request.send();
+
+  stop();
+});
+
+test("Test Synchronous GET Request, auto-deserializing JSON", function() {
+  request.set("isAsynchronous", false);
+  request.set("isJSON", true);
+  
+  var response = request.send();
+  
+  ok(response !== null, 'response should not be null') ;
+  ok(SC.ok(response), 'contents should not be an error');
+  same(response.get('body'), {"message": "Yay!"}, 'contents should have message') ;
+});
+
+
+test("Test if Request body is being auto-serializing to JSON", function() {
+  var objectToPost={"content": "garbage"};
+  request.set("isJSON", true).set('body', objectToPost);
+
+  var jsonEncoded = request.get('encodedBody');
+  
+  equals(jsonEncoded, '{"content":"garbage"}', "The json object passed in send should be encoded and set as the body");
+});
+
+ 
+test("Test Multiple Asynchronous GET Request - two immediate, and two in serial", function() {
+  var requestCount = 3;
+  var responseCount = 0;
+  var serialCount = 0;
+
+  var observer = function(response) {
+    responseCount++;
+    if (serialCount<=2) {
+      serialCount++;
+      SC.Request.getUrl(url).notify(this, observer).send();
+      requestCount++;
+    }
+  };
+  
+  
+  SC.Request.getUrl(url).notify(this, observer).send();
+  SC.Request.getUrl(url).notify(this, observer).send();
+  SC.Request.getUrl(url).notify(this, observer).send();
+  
+  stop() ; // stops the test runner
+  setTimeout( function(){
+    equals(requestCount, 6, "requestCount should be 6");
+    equals(responseCount, 6, "responseCount should be 6");
+    window.start() ; // starts the test runner
+  }, 2000);
+});
+
+
+test("Test timeouts", function() {
+  var message;
+  
+  // Sanity check 1
+  try {
+    SC.Request.getUrl(url).set('timeout', 0).send();
+  }
+  catch (e) {
+    message = e;
+  }
+  ok(message && message.indexOf("The timeout value must either not be specified or must be greater than 0") !== -1, 'An error should be thrown when the timeout value is 0 ms');
+  
+  // Sanity check 2
+  try {
+    SC.Request.getUrl(url).set('isAsynchronous', NO).set('timeout', 10).send();
+  }
+  catch (e2) {
+    message = e2;
+  }
+  ok(message && message.indexOf("Timeout values cannot be used with synchronous requests") !== -1, 'An error should be thrown when trying to use a timeout with a synchronous request');
+
+
+  // Make sure timeouts actually fire, and fire when expected.
+  var changedBefore  = NO,
+      changedAfter   = NO,
+      timeoutRequest = SC.Request.getUrl("http://www.sproutcore.com"),
+      checkstop;
+
+  var now = Date.now();
+  
+  // make the timeout as short as possible so that it will always happen
+  timeoutRequest.set('timeout', 10);
+  timeoutRequest.set('didTimeout', function() { 
+    // at least timeout time must have elapsed
+    var elapsed = Date.now()-now;
+    ok(elapsed >= 10, 'timeout must not fire earlier than 10msec - actual %@'.fmt(elapsed));
+
+    // timeout did fire...just resume...
+    clearTimeout(checkstop);
+    window.start();
+  });
+  
+  timeoutRequest.set('didReceive', function() { 
+    ok(false, 'timeout did not fire before response was recieved.  should have fired after 10msec.  response time: %@msec'.fmt(Date.now() - now));
+    window.start(); // resume
+  });
+  
+  SC.RunLoop.begin();
+  timeoutRequest.send();
+  SC.RunLoop.end();
+  
+  stop() ; // stops the test runner
+
+  // in case nothing works
+  checkstop = setTimeout(function() {
+    ok(false, 'timeout did not fire at all');
+    window.start();
+  }, 500); 
+  
+});
+
+
+})();
+</script>
+	</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Runtime</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955433"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955433"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955433"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/runtime/en/current/tests/system/object/bindings.js"; 
+}
+(function() {
+// ========================================================================
+// SC.Object bindings Tests
+// ========================================================================
+/*globals module test ok isObj equals expects */
+
+var testObject, fromObject, extraObject, TestObject;
+
+module("bind() method", {
+  
+  setup: function() {
+    testObject = SC.Object.create({
+      foo: "bar",
+      bar: "foo",
+      extraObject: null 
+    });
+    
+    fromObject = SC.Object.create({
+      bar: "foo",
+      extraObject: null 
+    }) ;
+    
+    extraObject = SC.Object.create({
+      foo: "extraObjectValue"
+    }) ;
+    
+    TestNamespace = {
+      fromObject: fromObject,
+      testObject: testObject
+    } ;
+  },
+  
+  teardown: function() { 
+    delete testObject ; 
+    delete fromObject ;
+    delete extraObject ;
+  //  delete TestNamespace ;
+  }
+  
+});
+  
+test("bind(TestNamespace.fromObject.bar) should follow absolute path", function() {
+  // create binding
+  testObject.bind("foo", "TestNamespace.fromObject.bar") ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", "changedValue") ;
+  
+  // support new-style bindings if available
+  SC.Binding.flushPendingChanges();
+  equals("changedValue", testObject.get("foo"), "testObject.foo");
+});
+  
+test("bind(.bar) should bind to relative path", function() {
+  // create binding
+  testObject.bind("foo", ".bar") ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  testObject.set("bar", "changedValue") ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("changedValue", testObject.get("foo"), "testObject.foo");
+});
+
+test("SC.Binding.bool(TestNamespace.fromObject.bar)) should create binding with bool transform", function() {
+  // create binding
+  testObject.bind("foo", SC.Binding.bool("TestNamespace.fromObject.bar")) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", 1) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(YES, testObject.get("foo"), "testObject.foo == YES");
+  
+  fromObject.set("bar", 0) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(NO, testObject.get("foo"), "testObject.foo == NO");
+});
+
+test("bind(TestNamespace.fromObject*extraObject.foo) should create chained binding", function() {
+  testObject.bind("foo", "TestNamespace.fromObject*extraObject.foo");
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  fromObject.set("extraObject", extraObject) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("extraObjectValue", testObject.get("foo"), "testObject.foo") ;
+});
+
+test("bind(*extraObject.foo) should create locally chained binding", function() {
+  testObject.bind("foo", "*extraObject.foo");
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  testObject.set("extraObject", extraObject) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("extraObjectValue", testObject.get("foo"), "testObject.foo") ;
+});
+
+
+module("fooBinding method", {
+  
+  setup: function() {
+    TestObject = SC.Object.extend({
+      foo: "bar",
+      bar: "foo",
+      extraObject: null 
+    });
+    
+    fromObject = SC.Object.create({
+      bar: "foo",
+      extraObject: null 
+    }) ;
+    
+    extraObject = SC.Object.create({
+      foo: "extraObjectValue"
+    }) ;
+        
+    TestNamespace = {
+      fromObject: fromObject,
+      testObject: TestObject
+    } ;
+  },
+  
+  teardown: function() { 
+    delete TestObject ;
+    delete fromObject ;
+    delete extraObject ;
+  //  delete TestNamespace ;
+  }
+  
+});
+
+test("fooBinding: TestNamespace.fromObject.bar should follow absolute path", function() {
+  // create binding
+  testObject = TestObject.create({
+    fooBinding: "TestNamespace.fromObject.bar"
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", "changedValue") ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("changedValue", testObject.get("foo"), "testObject.foo");
+});
+
+test("fooBinding: .bar should bind to relative path", function() {
+  
+  testObject = TestObject.create({
+    fooBinding: ".bar"
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  testObject.set("bar", "changedValue") ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("changedValue", testObject.get("foo"), "testObject.foo");
+});
+
+test("fooBinding: SC.Binding.bool(TestNamespace.fromObject.bar should create binding with bool transform", function() {
+  
+  testObject = TestObject.create({
+    fooBinding: SC.Binding.bool("TestNamespace.fromObject.bar") 
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", 1) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(YES, testObject.get("foo"), "testObject.foo == YES");
+  
+  fromObject.set("bar", 0) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(NO, testObject.get("foo"), "testObject.foo == NO");
+});
+
+test("fooBinding: TestNamespace.fromObject*extraObject.foo should create chained binding", function() {
+  
+  testObject = TestObject.create({
+    fooBinding: "TestNamespace.fromObject*extraObject.foo" 
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  fromObject.set("extraObject", extraObject) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("extraObjectValue", testObject.get("foo"), "testObject.foo") ;
+});
+
+test("fooBinding: *extraObject.foo should create locally chained binding", function() {
+  
+  testObject = TestObject.create({
+    fooBinding: "*extraObject.foo" 
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  testObject.set("extraObject", extraObject) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals("extraObjectValue", testObject.get("foo"), "testObject.foo") ;
+});
+
+module("fooBindingDefault: SC.Binding.Bool (old style)", {
+  
+  setup: function() {
+    TestObject = SC.Object.extend({
+      foo: "bar",
+      fooBindingDefault: SC.Binding.bool(),
+      bar: "foo",
+      extraObject: null 
+    });
+    
+    fromObject = SC.Object.create({
+      bar: "foo",
+      extraObject: null 
+    }) ;
+    
+    TestNamespace = {
+      fromObject: fromObject,
+      testObject: TestObject
+    } ;
+  },
+  
+  teardown: function() { 
+    delete TestObject ;
+    delete fromObject ;
+ //   delete TestNamespace ;
+  }
+  
+});
+
+test("fooBinding: TestNamespace.fromObject.bar should have bool binding", function() {
+  // create binding
+  testObject = TestObject.create({
+    fooBinding: "TestNamespace.fromObject.bar"
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", 1) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(YES, testObject.get("foo"), "testObject.foo == YES");
+  
+  fromObject.set("bar", 0) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(NO, testObject.get("foo"), "testObject.foo == NO");
+});
+
+test("fooBinding: SC.Binding.not(TestNamespace.fromObject.bar should override default", function() {
+  
+  testObject = TestObject.create({
+    fooBinding: SC.Binding.not("TestNamespace.fromObject.bar") 
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", 1) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(NO, testObject.get("foo"), "testObject.foo == NO");
+  
+  fromObject.set("bar", 0) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(YES, testObject.get("foo"), "testObject.foo == YES");
+});
+
+module("fooBindingDefault: SC.Binding.bool() (new style)", {
+  
+  setup: function() {
+    TestObject = SC.Object.extend({
+      foo: "bar",
+      fooBindingDefault: SC.Binding.bool(),
+      bar: "foo",
+      extraObject: null 
+    });
+    
+    fromObject = SC.Object.create({
+      bar: "foo",
+      extraObject: null 
+    }) ;
+    
+    TestNamespace = {
+      fromObject: fromObject,
+      testObject: testObject
+    } ;
+  },
+  
+  teardown: function() { 
+    delete TestObject ;
+    delete fromObject ;
+   // delete TestNamespace ;
+  }
+  
+});
+
+test("fooBinding: TestNamespace.fromObject.bar should have bool binding", function() {
+  // create binding
+  testObject = TestObject.create({
+    fooBinding: "TestNamespace.fromObject.bar"
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", 1) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(YES, testObject.get("foo"), "testObject.foo == YES");
+  
+  fromObject.set("bar", 0) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(NO, testObject.get("foo"), "testObject.foo == NO");
+});
+
+test("fooBinding: SC.Binding.not(TestNamespace.fromObject.bar should override default", function() {
+  
+  testObject = TestObject.create({
+    fooBinding: SC.Binding.not("TestNamespace.fromObject.bar") 
+  }) ;
+  SC.Binding.flushPendingChanges() ; // actually sets up up the binding
+  
+  // now make a change to see if the binding triggers.
+  fromObject.set("bar", 1) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(NO, testObject.get("foo"), "testObject.foo == NO");
+  
+  fromObject.set("bar", 0) ;
+  
+  SC.Binding.flushPendingChanges();
+  equals(YES, testObject.get("foo"), "testObject.foo == YES");
+});
+
+})();
+</script>
+	</body>
+</html>

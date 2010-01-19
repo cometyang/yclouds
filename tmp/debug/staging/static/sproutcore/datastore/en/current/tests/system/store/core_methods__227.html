@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Datastore</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955365"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955365"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955365"></script>
+  <script type="text/javascript" src="/static/sproutcore/datastore/en/current/javascript.js?1262955365"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/datastore/en/current/tests/system/store/core_methods.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+/*globals module ok equals same test MyApp Sample */
+
+var store, Application, dataSource;
+
+module("SC.Store Core Methods", {
+  setup: function() {
+    dataSource = SC.DataSource.create({ 
+      
+      gotParams: NO,
+      
+      updateRecord: function(store, storeKey, params) {
+        this.gotParams = params && params['param1'] ? YES: NO;
+      }
+    });
+    
+    Application = {};
+    Application._nameDidChange = 0;
+    
+    Application.File = SC.Record.extend({ 
+      
+      nameDidChange: function(object, key) {
+        Application._nameDidChange++;
+      }.observes('name', 'url', 'isDirectory')
+      
+    });
+    Application.FileDisk = SC.Record.extend({ });
+    
+    Application.Data = {
+      
+      "FileDisk": [
+        { guid: '14', name: 'Main Drive', parent: null, children: null }
+      ],
+    
+      "File": [
+        { guid: '10', name: 'Home', url: '/emily_parker', isDirectory: true, parent: null, children: 'Collection'},
+        { guid: '11', name: 'Documents', fileType: 'documents', url: '/emily_parker/Documents', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'October 21, 2007', filetype: 'directory', isShared: false},
+        { guid: '137',name: 'Library', fileType: 'library', url: '/emily_parker/Library', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'October 21, 2007', filetype: 'directory', isShared: false},
+        { guid: '12', name: 'Movies', fileType: 'movies', url: '/emily_parker/Movies', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'June 15, 2007', filetype: 'directory', isShared: true, sharedAt: 'October 15, 2007', sharedUntil: 'March 31, 2008', sharedUrl: '2fhty', isPasswordRequired: true},
+        { guid: '134',name: 'Music', fileType: 'music', url: '/emily_parker/Music', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'June 15, 2007', filetype: 'directory', isShared: true, sharedAt: 'October 15, 2007', sharedUntil: 'March 31, 2008', sharedUrl: '2fhty', isPasswordRequired: true},
+        { guid: '135',name: 'Pictures', fileType: 'pictures', url: '/emily_parker/Pictures', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'June 15, 2007', filetype: 'directory', isShared: true, sharedAt: 'October 15, 2007', sharedUntil: 'March 31, 2008', sharedUrl: '2fhty', isPasswordRequired: true},
+        { guid: '13', name: 'Auto Insurance', fileType: 'folder', url: '/emily_parker/Documents/Auto%20Insurance', isDirectory: true, parent: '11', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'October 21, 2007', filetype: 'directory', isShared: false},
+        { guid: '14', name: 'Birthday Invitation.pdf', fileType: 'file', url: '/emily_parker/Documents/Birthday%20Invitation', isDirectory: false, parent: '11', createdAt: 'October 17, 2007', modifiedAt: 'October 21, 2007', filetype: 'pdf', isShared: false},
+        { guid: '136', name: 'Software', fileType: 'software', url: '/emily_parker/Software', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'June 15, 2007', filetype: 'directory', isShared: true, sharedAt: 'October 15, 2007', sharedUntil: 'March 31, 2008', sharedUrl: '2fhty', isPasswordRequired: true}
+      ]
+    };
+    
+    SC.RunLoop.begin();
+    store = SC.Store.create({ name: 'Test store'} ).from(dataSource);
+    for(var i in Application.Data) {
+      store.loadRecords(Application[i], Application.Data[i]);
+    }
+    SC.RunLoop.end();
+    
+    // make sure RecordType by String can map
+    window.Application = Application;
+  }    
+});
+
+test("Verify that SC.Store's toString() includes the store's name, if it was specified", function() {
+  
+  var description = store.toString();
+  ok(description.indexOf('Test store') !== -1, 'should contain "Test store"');
+  
+});
+
+test("Verify loadRecords() loads data", function() {
+  
+  equals(store.find(Application.File, '14').get('name'), 'Birthday Invitation.pdf', 'should return File 14');
+  equals(store.find(Application.FileDisk, '14').get('name'), 'Main Drive', 'should return FileDisk 14');
+  
+});
+
+test("Verify storeKeys() gets all store keys", function() {
+  
+  var storeKey;
+  
+  equals(store.storeKeys().length, 10, 'Length should be 10');
+  
+  storeKey = store.storeKeyFor(Application.File, '10');
+  store.writeStatus(storeKey, SC.Record.EMPTY);
+  equals(store.storeKeys().length, 9, 'Length should be one less now');
+  
+});
+
+test("find() should take both SC.Record object and SC.Record string as recordtype argument", function() {
+  
+  equals(store.find('Application.File', '14').get('name'), 'Birthday Invitation.pdf', 'should return File 14');
+  equals(store.find(Application.File, '14').get('name'), 'Birthday Invitation.pdf', 'should return FileDisk 14');
+  
+});
+
+test("loading more records should not sending _flushRecordChanges() until the end of the runloop", function() {
+
+  var moreData = [
+      { guid: '55', name: 'Home', url: '/emily_parker', isDirectory: true, parent: null, children: 'Collection'},
+      { guid: '56', name: 'Documents', fileType: 'documents', url: '/emily_parker/Documents', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'October 21, 2007', filetype: 'directory', isShared: false},
+      { guid: '57',name: 'Library', fileType: 'library', url: '/emily_parker/Library', isDirectory: true, parent: '10', children: 'Collection', createdAt: 'June 15, 2007', modifiedAt: 'October 21, 2007', filetype: 'directory', isShared: false}
+  ];
+  
+  SC.RunLoop.begin();
+  
+  var storeKeys = store.loadRecords(Application.File, moreData);
+  equals(storeKeys.length, 3, 'precon - should have loaded three records');
+  equals(store.recordPropertyChanges.storeKeys.length, 3, 'should be three storeKeys in changelog');
+  
+  SC.RunLoop.end();
+  
+  // recordPropertyChanges may not exist after notifications have gone out.
+  // treat that like having len=0
+  var changes = store.recordPropertyChanges;
+  var len = (changes && changes.storeKeys) ? changes.storeKeys.length : 0;
+  equals(len, 0, 'should be zero storeKeys in changelog');
+  
+});
+
+test("Passing params through commitRecords()", function() {
+  
+  var file = store.find(Application.File, '14');
+  file.set('name', 'My Great New Name');
+  
+  store.commitRecords(null, null, null, { param1: 'value1' });
+  
+  equals(dataSource.gotParams, YES, 'params should have travelled through to dataSource updateRecord() call');
+  
+});
+
+test("Make sure that setting an attribute on a record will only notify respective observers once", function() {
+  
+  var file = store.find(Application.File, '14');
+  Application._nameDidChange = 0 ;
+  
+  SC.RunLoop.begin();
+  file.writeAttribute('name', 'My Great New Name');
+  SC.RunLoop.end();
+  
+  equals(Application._nameDidChange, 1, 'observer was only fired once');
+
+});
+
+})();
+</script>
+	</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955398"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955398"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/views/view/layoutChildViews.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: �2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test equals context ok same */
+
+// .......................................................
+// layoutChildViews() 
+// 
+module("SC.View#layoutChildViews");
+
+test("calls renderLayout() on child views on views that need layout if they have a layer", function() {
+
+	var callCount = 0 ;
+	var ChildView = SC.View.extend({
+		updateLayout: function(context) { callCount++; }
+	});
+	
+	var view = SC.View.create({
+		childViews: [ChildView, ChildView, ChildView]
+	});
+	
+	var cv1 = view.childViews[0];
+	var cv2 = view.childViews[1];
+	
+	// add to set...
+	view.layoutDidChangeFor(cv1);
+	view.layoutDidChangeFor(cv2);
+	
+	view.layoutChildViews();
+	equals(callCount, 2, 'updateLayout should be called on two dirty child views');
+});
+
+// .......................................................
+// updateLayout() 
+// 
+module("SC.View#updateLayout");
+
+test("if view has layout, calls renderLayout with context to update element", function() {
+
+	// NOTE: renderLayout() is also called when a view's
+	// layer is first created.  We use isTesting below to
+	// avoid running the renderLayout() test code until we
+	// are actually doing layout.
+	var callCount = 0, isTesting = NO ;
+	var view = SC.View.create({
+		renderLayout: function(context) {
+			if (!isTesting) return ;
+			equals(context._elem, this.get('layer'), 'should pass context that will edit layer');
+			callCount++;
+		}
+	});
+	
+	view.createLayer(); // we need a layer
+	ok(view.get('layer'), 'precond - should have a layer');
+	
+	isTesting= YES ;
+	view.updateLayout();
+	equals(callCount, 1, 'should call renderLayout()');
+});
+
+test("if view has NO layout, should not call renderLayout", function() {
+
+	// NOTE: renderLayout() is also called when a view's
+	// layer is first created.  We use isTesting below to
+	// avoid running the renderLayout() test code until we
+	// are actually doing layout.
+	var callCount = 0, isTesting = NO ;
+	var view = SC.View.create({
+		renderLayout: function(context) {
+			if (!isTesting) return ;
+			callCount++;
+		}
+	});
+	
+	ok(!view.get('layer'), 'precond - should NOT have a layer');
+	
+	isTesting= YES ;
+	view.updateLayout();
+	equals(callCount, 0, 'should NOT call renderLayout()');
+});
+
+test("returns receiver", function() {
+	var view = SC.View.create();
+	equals(view.updateLayout(), view, 'should return receiver');
+});
+
+// .......................................................
+//  renderLayout() 
+//
+module('SC.View#renderLayout');
+
+test("adds layoutStyle property to passed context", function() {
+
+	var view = SC.View.create({
+		// mock style for testing...
+		layoutStyle: { width: 50, height: 50 } 
+	});
+	var context = view.renderContext();
+
+	ok(context.styles().width !== 50, 'precond - should NOT have width style');
+	ok(context.styles().height !== 50, 'precond - should NOT have height style');
+
+
+	view.renderLayout(context);
+
+	equals(context.styles().width, 50, 'should have width style');
+	equals(context.styles().height, 50, 'should have height style');
+});
+
+// .......................................................
+// layoutChildViewsIfNeeded() 
+//
+var view, callCount ;
+module('SC.View#layoutChildViewsIfNeeded', {
+	setup: function() {
+		callCount = 0;
+		view = SC.View.create({
+			layoutChildViews: function() { callCount++; }
+		});
+	},
+	teardown: function() { view = null; }
+});
+  
+test("calls layoutChildViews() if childViewsNeedLayout and isVisibleInWindow & sets childViewsNeedLayout to NO", function() {
+
+	view.childViewsNeedLayout = YES ;
+	view.isVisibleInWindow = YES ;
+	view.layoutChildViewsIfNeeded();
+	equals(callCount, 1, 'should call layoutChildViews()');
+	equals(view.get('childViewsNeedLayout'),NO,'should set childViewsNeedLayout to NO');
+});
+
+test("does not call layoutChildViews() if childViewsNeedLayout is NO", function() {
+
+	view.childViewsNeedLayout = NO ;
+	view.isVisibleInWindow = YES ;
+	view.layoutChildViewsIfNeeded();
+	equals(callCount, 0, 'should NOT call layoutChildViews()');
+});
+
+
+test("does not call layoutChildViews() if isVisibleInWindow is NO unless passed isVisible YES", function() {
+
+	view.childViewsNeedLayout = YES ;
+	view.isVisibleInWindow = NO ;
+	view.layoutChildViewsIfNeeded();
+	equals(callCount, 0, 'should NOT call layoutChildViews()');
+	equals(view.get('childViewsNeedLayout'), YES, 'should leave childViewsNeedLayout set to YES');
+	
+	view.layoutChildViewsIfNeeded(YES);
+	equals(callCount, 1, 'should call layoutChildViews()');
+	equals(view.get('childViewsNeedLayout'), NO, 'should set childViewsNeedLayout to NO');
+});
+
+test("returns receiver", function() {
+	equals(view.layoutChildViewsIfNeeded(), view, 'should return receiver');
+});
+  
+
+
+})();
+</script>
+	</body>
+</html>

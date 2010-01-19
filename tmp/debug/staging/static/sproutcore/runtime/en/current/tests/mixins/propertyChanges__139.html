@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Runtime</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955433"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955433"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955433"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/runtime/en/current/tests/mixins/propertyChanges.js"; 
+}
+(function() {
+var ObjectA;
+module("object.propertyChanges()", {	
+	setup: function() {
+		ObjectA = SC.Object.create({
+			normal: 'value',
+			normal1: 'zeroValue',
+						
+			action: function() {
+				this.normal1= 'newValue';
+			}.observes('normal'),
+			
+			normal2: 'dependentValue',
+			normal3: 'notifiedValue',
+			
+			notifyAction: function() {
+				this.normal3= 'newDependentValue';
+			}.observes('normal2'),
+			
+			notifyAllAction: function() {
+				this.normal2= 'newZeroValue';
+			}.observes('normal1')			
+		});
+  }
+});
+
+// CAJ: These tests are OK but the purpose of begin/end property changes is
+// to suspend notifications.  you should do something like:
+/*
+  obj.beginPropertyChanges()
+  obj.set('foo', 'bar');
+  -- verify that observer for 'foo' did not fire
+  obj.endPropertyChanges()
+  -- verify that observer for 'foo' did fire
+*/
+// also, we need some tests verifying that begin/end property changes can
+// be nested.  When they are nested, observers should not fire until you 
+// unnest them.  i.e.  
+/*
+  obj.beginPropertyChanges()
+    obj.beginPropertyChanges() // nested!
+      obj.set('foo', 'bar')
+    obj.endPropertyChanges(); // nested - do not fire.
+  obj.endProeprtyChanges()
+  -- observers fire here!
+*/
+//
+test("should increment the indicator before begining the changes to the object", function() {
+    equals(ObjectA.beginPropertyChanges()._kvo_changeLevel, 1) ;
+});
+
+test("should increment the indicator before begining the changes to the object", function() {
+    equals(ObjectA.endPropertyChanges()._kvo_changeLevel, 0) ;
+});
+
+// CAJ: This test works but its confusing.  the relationship between 'normal' 
+// and 'normal1' is really unclear.  Rename these properties
+// to something more descriptive and add comments to this test explaining 
+// what you expect to have happen.  You should always comment in the test 
+// anytime you expect something to happen in the background (such as expecting
+// an observer to fire.) 
+test("should indicate that the property of an object has just changed", function() {
+	equals(ObjectA.propertyWillChange('normal'),ObjectA) ;
+	ObjectA.normal = 'newValue';
+	equals(ObjectA.propertyDidChange('normal', null),ObjectA) ;
+	equals(ObjectA.normal1,'newValue') ;
+});
+
+// CAJ:  See my comment from above.  It's not clear how this test works.  
+// Consider using different property names and add a comment inline to 
+// explain that you expect an observer to fire.
+test("should notify that the property of an object has changed", function() {
+	ObjectA.notifyPropertyChange('normal2','value');
+	equals(ObjectA.normal3,'newDependentValue') ;
+});
+
+// CAJ:  Same comment here as the previous two tests.
+test("should notify all observers that their property might have changed", function() {
+	ObjectA.allPropertiesDidChange();
+	equals(ObjectA.normal2,'newZeroValue') ;
+});
+
+
+})();
+</script>
+	</body>
+</html>

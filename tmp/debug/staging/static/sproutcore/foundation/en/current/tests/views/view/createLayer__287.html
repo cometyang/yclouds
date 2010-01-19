@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>Sproutcore Foundation</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  var version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (SC.browser.msie==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+
+     <link href="/static/sproutcore/testing/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+  <link href="/static/sproutcore/foundation/en/current/stylesheet.css?1262955016" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="sc-theme focus" style="overflow:hidden;" >  
+<script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/setup_body_class_names.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Sprout Systems, Inc. and contributors.
+//            Portions ©2008-2009 Apple Inc. All rights reserved.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+
+</script>
+
+
+  <script type="text/javascript" src="/static/sproutcore/debug/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/testing/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/runtime/en/current/javascript.js?1262955399"></script>
+  <script type="text/javascript" src="/static/sproutcore/foundation/en/current/javascript.js?1262955399"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+<script type="text/javascript">
+if (typeof SC !== "undefined") {
+  SC.mode = "TEST_MODE";
+  SC.filename = "static/sproutcore/foundation/en/current/tests/views/view/createLayer.js"; 
+}
+(function() {
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2009 Apple Inc. and contributors.
+// License:   Licened under MIT license (see license.js)
+// ==========================================================================
+
+/*global module test equals context ok same Q$ */
+
+// ..........................................................
+// createLayer()
+// 
+module("SC.View#createLayer");
+
+test("returns the receiver", function() {
+  var v= SC.View.create();
+  equals(v.createLayer(), v, 'returns receiver');
+});
+
+test("calls prepareContext() and sets layer to resulting element", function() {
+  var v= SC.View.create({
+    tagName: 'span',
+    
+    prepareContext: function(context, firstTime) {
+      context.push("foo");
+    }
+  });
+  
+  equals(v.get('layer'), null, 'precondition - has no layer');
+  v.createLayer();
+  
+  var elem = v.get('layer');
+  ok(!!elem, 'has element now');
+  equals(elem.innerHTML, 'foo', 'has innerHTML from context');
+  equals(elem.tagName.toString().toLowerCase(), 'span', 'has tagName from view');
+  elem = null ;
+});
+
+test("invokes didCreateLayer() on receiver and all child views", function() {
+  var callCount = 0, mixinCount = 0;
+  var v= SC.View.create({
+    
+    didCreateLayer: function() { callCount++; },
+    didCreateLayerMixin: function() { mixinCount++; },
+    
+    childViews: [SC.View.extend({
+      didCreateLayer: function() { callCount++; },
+      childViews: [SC.View.extend({
+        didCreateLayer: function() { callCount++; },
+        didCreateLayerMixin: function() { mixinCount++; }
+      }), SC.View.extend({ /* no didCreateLayer */ })]
+    })]
+  });
+  
+  // verify setup...
+  ok(v.didCreateLayer, 'precondition - has root');
+  ok(v.childViews[0].didCreateLayer, 'precondition - has firstChild');
+  ok(v.childViews[0].childViews[0].didCreateLayer, 'precondition - has nested child');
+  ok(!v.get('layer'), 'has no layer');
+
+  v.createLayer();
+  equals(callCount, 3, 'did invoke all methods');
+  equals(mixinCount, 2, 'did invoke all mixin methods');
+});
+
+test("generated layer include HTML from child views as well", function() {
+  var v = SC.View.create({
+    childViews: [ SC.View.extend({ layerId: "foo" })]
+  });
+  
+  v.createLayer();
+  ok(Q$('#foo', v.get('layer')).get(0), 'has element with child layerId');
+});
+
+test("does NOT assign layer to child views immediately", function() {
+  var v = SC.View.create({
+    childViews: [ SC.View.extend({ layerId: "foo" })]
+  });
+  v.createLayer();
+  ok(!v.childViews[0]._view_layer, 'has no layer yet');
+});
+
+// ..........................................................
+// USE CASES
+// 
+
+// when view is first created, createLayer is NOT called
+
+// when view is added to parent view, and parent view is already visible in
+// window, layer is created just before adding it to the DOM
+
+// when a pane is added to the window, the pane layer is created.
+
+// when a pane with an exiting layer is removed from the DOM, the layer is removed from the DOM, but it is not destroyed.
+
+// what if we move a view from a parentView that has a layer to a parentView that does NOT have a layer.   Delete layer.
+
+// what if a move a view from a parentView that does NOT have a layer to a parentView that DOES have a layer.
+
+})();
+</script>
+	</body>
+</html>
