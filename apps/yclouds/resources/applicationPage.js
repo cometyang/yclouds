@@ -1,5 +1,4 @@
 sc_require('core')
-
 Yclouds.applicationPage = SC.Page.design({
     mainView: SC.View.design({
        classNames: ['application-page'],
@@ -11,8 +10,9 @@ Yclouds.applicationPage = SC.Page.design({
            value: 'Start Application Model Editing'
        }),
        canvas: LinkIt.CanvasView.design(SCUI.Cleanup, {
-           layout: { left:250, right:0, top:0, bottom:0 },
-           classNames: ['canvas']
+           layout: { left:250, right:0, top:80, bottom:0 },
+           classNames: ['canvas'],
+           background: 'yellow'
        })
 
    })
